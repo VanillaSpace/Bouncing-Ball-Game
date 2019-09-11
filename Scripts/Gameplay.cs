@@ -72,10 +72,30 @@ public class Gameplay : MonoBehaviour
                  deathParts.GetComponent<AudioSource>().Play();
             }
     }
+    
+    void IncreaseDifficulty()
+    {
+        float timeScaleLimit = 3.0f;
+        float timeScaler = Time.timeScale + 0.03f;
+        if (timeScaler > timeScaleLimit)
+        {
+            timeScaler = timeScaleLimit;
+        }
+        Time.timeScale = timeScaler; 
+    }
 
     void AddScore()
     {
         scoreboard += pointsPerBounce;
         scoreTx = scoreboard.ToString();
+    }
+    
+    public void DoQuit()
+    {
+        Application.Quit();
+    }
+    public void DoRestart()
+    {
+        SceneManager.LoadScene(sceneToReload);
     }
 }

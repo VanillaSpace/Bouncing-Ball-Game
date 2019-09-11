@@ -10,14 +10,24 @@ public class Gameplay : MonoBehaviour
     public string preTextScore = "Score: ";
     private string scoreTx = "0";
     public int pointsPerBounce = 35;
+    
+    public ParticleSystem deathParts;
 
+    public GameObject btnExit;
+    public GameObject btnRetry;
 
+    private AudioSource audioBall;
+
+    private string sceneToReload = "Game";
+    
 
     public float minTranslation = 0.05f;
     // Start is called before the first frame update
     void Start()
     {
-        
+        audioBall = GetComponent<AudioSource>();
+        btnExit.SetActive(false);
+        btnRetry.SetActive(false);
     }
 
     // Update is called once per frame
@@ -42,7 +52,25 @@ public class Gameplay : MonoBehaviour
             AddScore();
 
             scoreTxt.text = preTextScore + scoreTx;
+                    IncreaseDifficulty();
+                    audioBall.Play();
         }
+         else
+            {
+                  // Game over
+                 deathParts.transform.position = transform.position;
+                 GetComponent<TrailRenderer>().enabled = false;
+                 transform.position = new Vector3(-1000, -1000);
+                 Time.timeScale = 1.0f;
+                 deathParts.Play();
+
+                 btnExit.SetActive(true);
+                 btnRetry.SetActive(true);
+
+                 Cursor.lockState = CursorLockMode.None;
+                 Cursor.visible = true;
+                 deathParts.GetComponent<AudioSource>().Play();
+            }
     }
 
     void AddScore()
